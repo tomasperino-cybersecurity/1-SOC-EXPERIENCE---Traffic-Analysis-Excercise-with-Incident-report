@@ -1,82 +1,79 @@
-🕵️‍♂️ # 1-SOC-EXPERIENCE---Traffic-Analysis-Excercise-with-Incident-report
+🕵️‍♂️ # 1-EXPERIENCIA-SOC---Ejercicio-de-Análisis-de-Tráfico-con-Reporte-de-Incidente
 
-🌎 Background
-As dynamic go-getter at a Security Operations Center (SOC), you check the Security Information and Event Management (SIEM) system and find several signature hits for NetSupport Manager RAT from 45.131.214[.]85 over TCP port 443. The activity started on 2026-02-28 at 19:55 UTC.
+🌎 Contexto
+Como analista proactivo en un Centro de Operaciones de Seguridad (SOC), revisas el sistema de Gestión de Eventos e Información de Seguridad (SIEM) y encuentras varias alertas de firmas para el RAT NetSupport Manager desde la IP 45.131.214[.]85 a través del puerto TCP 443. La actividad comenzó el 2026-02-28 a las 19:55 UTC.
 
-Using this information, you quickly retrieve a packet capture (pcap) of the traffic from the internal IP address that triggered these alerts. It's all on you now! You're expected to write up an incident report, so someone can track down the infected computer and put a stop to this nonsense!
+Utilizando esta información, recuperas rápidamente una captura de paquetes (pcap) del tráfico de la dirección IP interna que activó estas alertas. ¡Ahora todo depende de ti! Se espera que redactes un informe de incidente para que alguien pueda localizar la computadora infectada y detener esta actividad.
 
-Malicious activity related to NetSupport Manager RAT was detected from the external IP address 45.131.214.85 over TCP port 443. Network traffic analysis identified a compromised internal host within the 10.2.28.0/24 network segment.
+Se detectó actividad maliciosa relacionada con NetSupport Manager RAT desde la dirección IP externa 45.131.214.85 a través del puerto TCP 443. El análisis del tráfico de red identificó un host interno comprometido dentro del segmento de red 10.2.28.0/24.
 
-The program used to analyze the packets was Wireshark 🦈​
+El programa utilizado para analizar los paquetes fue Wireshark 🦈.​
 
-🌎​ Environment Details
-- Lan Range: 10.2.28.0/24
-- Domain: easyas123.tech
-- Domain Controller: 10.2.28.2
-- Gateway: 10.2.28.1
+🌎 Detalles del Entorno
+- Rango de LAN: 10.2.28.0/24
+- Dominio: easyas123.tech
+- Controlador de Dominio: 10.2.28.2
+- Puerta de Enlace (Gateway): 10.2.28.1
 
-​🔎​ Findings:
-- Infected IP Address: 10.2.28.88
-- Infected MAC Address: 00:19:d1:b2:4d:ad
-- Attacker IP Address: 45.131.214.85
-- Infected Hostname: DESKTOP-TEYQ2NR
-- Infected Windows Account: brolf
-- Infected Windows User: Becka Rolf
+🔎 Hallazgos:
+- IP del Host Infectado: 10.2.28.88
+- Dirección MAC Infectada: 00:19:d1:b2:4d:ad
+- Dirección IP del Atacante: 45.131.214.85
+- Nombre de Host Infectado: DESKTOP-TEYQ2NR
+- Cuenta de Windows Infectada: brolf
+- Usuario de Windows Infectado: Becka Rolf
 
-​⚠️​ Activity: Persistent communication over TCP 443 (TCP ACK Packets)(Retransmissions)(Persistent Connection Pattern)
-​⚠️​ Type: Possible Command & Control (C2)
-This behavior is consistent with Remote Access Trojan
+⚠️ Actividad: Comunicación persistente sobre TCP 443 (Paquetes TCP ACK)(Retransmisiones)(Patrón de Conexión Persistente).
+⚠️ Tipo: Posible Comando y Control (C2). Este comportamiento es consistente con un Troyano de Acceso Remoto (RAT).
 
-🛜​ Network Behavior:
-Continuous communication observed between the internal host and the external IP.
-HTTP traffic was observed prior to the malicious communication, however, the initial infection vector could not be confirmed.
+🛜 Comportamiento de Red: Se observó una comunicación continua entre el host interno y la IP externa. Se detectó tráfico HTTP previo a la comunicación maliciosa; sin embargo, el vector inicial de infección no pudo ser confirmado.
 
-🧐​ Process & Filters:
+🧐 Procesos y Filtros:
+
 ip.addr == 45.131.214.85
-- With this filter I was able to identify the Persistent and Repetitive Communication from IP 45.131.214.85 to the internal IP 10.2.28.88 and its MAC address
+Con este filtro pude identificar la comunicación persistente y repetitiva desde la IP 45.131.214.85 hacia la IP interna 10.2.28.88 y su dirección MAC.
 
 <img width="903" height="453" alt="image" src="https://github.com/user-attachments/assets/fcd0c441-90fe-4644-9947-89ee961737eb" />
 
 <img width="551" height="129" alt="image" src="https://github.com/user-attachments/assets/c3016487-3385-4409-ad40-751e707654aa" />
 
 nbns
-- This filter allows me to identify the Hostname (DESKTOP-TEYQ2NR) that corresponds to the IP address 10.2.28.88
+- Este filtro me permite identificar el nombre de host (DESKTOP-TEYQ2NR) que corresponde a la dirección IP 10.2.28.88.
 
 <img width="862" height="125" alt="image" src="https://github.com/user-attachments/assets/26759eb6-0b26-4b06-827a-016b263ceebb" />
 
 kerberos.CNameString
-- This filter allows me to identify the Windows user account name (brolf). The employee's last name is "Rolf".
+- Este filtro permite identificar el nombre de la cuenta de usuario de Windows (brolf). El apellido del empleado es "Rolf".
 
 <img width="664" height="124" alt="image" src="https://github.com/user-attachments/assets/103ff43f-9469-49d5-a987-5dcd58b2578c" />
 
 <img width="313" height="163" alt="image" src="https://github.com/user-attachments/assets/84a4de7d-a449-4b6b-a912-ce04548ee9f8" />
 
-With this information, I filter for packages that contain "Rolf"
+Con esta informacion, filtro por paquetes que incluyan "Rolf"
 
 <img width="943" height="80" alt="image" src="https://github.com/user-attachments/assets/247e5779-620a-4f54-8185-74997a3fe084" />
 
 <img width="472" height="314" alt="image" src="https://github.com/user-attachments/assets/c12c2572-8655-46d9-87ed-29fc6bfbdc5b" />
 
-😎​ Conclusion:
-The host 10.2.28.88 (DESKTOP-TEYQ2NR) shows behavior consistent with a NetSupport RAT infection, based on persistent communication with known external infrastructure.
-The initial infection vector and associated user could not be definitively determined.
+😎​ Conclusión:
+El host 10.2.28.88 (DESKTOP-TEYQ2NR) muestra un comportamiento consistente con una infección de NetSupport RAT, basado en la comunicación persistente con infraestructura externa conocida. El vector de infección inicial y el usuario asociado no pudieron determinarse de forma definitiva.
 
-🛡️​​ Recommendations as a Cybersecurity Professional:
-1) Containment
-- Isolate the infected host.
-- Block communication with the malicious IP.
+🛡️​​ Recomendaciones como Profesional de Ciberseguridad:
+1) Contención
+- Aislar el host infectado.
+- Bloquear la comunicación con la IP maliciosa.
 
-2) Investigation
-- Perform full antivirus/EDR scan.
-- Check for persistence mechanisms.
+2) Investigación
+- Realizar un escaneo completo con antivirus/EDR.
+- Verificar mecanismos de persistencia.
 
-3) Credential Security
-- Reset user credentials.
+3) Seguridad de Credenciales
+- Restablecer las credenciales del usuario.
 
-4) Network Security
-- Monitor for similar traffic patterns.
-- Implement detection rules.
+4) Seguridad de Red
+- Monitorear patrones de tráfico similares.
+- Implementar reglas de detección.
 
-5) Hardening
-- Restrict unnecessary HTTP traffic (Only HTTP servers used by the company will be enabled.)
-- Apply outbound filtering policies.
+5) Fortalecimiento (Hardening)
+- Restringir el tráfico HTTP innecesario (Solo se habilitarán los servidores HTTP utilizados por la empresa).
+- Aplicar políticas de filtrado de salida.
