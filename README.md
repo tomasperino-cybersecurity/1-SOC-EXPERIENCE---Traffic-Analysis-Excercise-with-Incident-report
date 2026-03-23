@@ -1,5 +1,13 @@
 🕵️‍♂️ # 1-SOC-EXPERIENCE---Traffic-Analysis-Excercise-with-Incident-report
+
+🌎 Background
+As dynamic go-getter at a Security Operations Center (SOC), you check the Security Information and Event Management (SIEM) system and find several signature hits for NetSupport Manager RAT from 45.131.214[.]85 over TCP port 443. The activity started on 2026-02-28 at 19:55 UTC.
+
+Using this information, you quickly retrieve a packet capture (pcap) of the traffic from the internal IP address that triggered these alerts. It's all on you now! You're expected to write up an incident report, so someone can track down the infected computer and put a stop to this nonsense!
+
 Malicious activity related to NetSupport Manager RAT was detected from the external IP address 45.131.214.85 over TCP port 443. Network traffic analysis identified a compromised internal host within the 10.2.28.0/24 network segment.
+
+The program used to analyze the packets was Wireshark 🦈​
 
 🌎​ Environment Details
 - Lan Range: 10.2.28.0/24
